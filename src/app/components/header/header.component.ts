@@ -13,7 +13,19 @@ export class HeaderComponent implements OnInit {
   data: any;
   subscription!: Subscription;
 
-  constructor(public dataService: DataService) {}
+  constructor(public dataService: DataService) {
+    this.data = [
+      {
+        close: '$0.00000',
+        date: 'Sep 24, 2017',
+        epoch: 0,
+        high: '$0.00000',
+        marketcap: 0,
+        open: '$0.00000',
+        volume: '$0.00000',
+      },
+    ];
+  }
 
   ngOnInit() {
     this.subscription = this.dataService.getData().subscribe((data) => {
@@ -26,7 +38,9 @@ export class HeaderComponent implements OnInit {
   next() {
     this.dataService.next();
     this.data = this.dataService.data[this.dataService.index];
-    console.log(this.data);
+    console.log(`Epoch ${this.data.epoch}`);
+    this.dataService.updateChart(this.data);
+    console.log(this.dataService.chartDataArr);
   }
 
   unsubscribe() {

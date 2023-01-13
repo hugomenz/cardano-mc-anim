@@ -7,6 +7,9 @@ import { MainChartComponent } from './components/main-chart/main-chart.component
 import { SideChartComponent } from './components/side-chart/side-chart.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HttpClientModule } from '@angular/common/http';
+
+import { NgChartsModule } from 'ng2-charts';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -15,7 +18,7 @@ import { HttpClientModule } from '@angular/common/http';
     SideChartComponent,
     FooterComponent,
   ],
-  imports: [BrowserModule, HttpClientModule],
+  imports: [BrowserModule, HttpClientModule, NgChartsModule],
   providers: [],
   bootstrap: [AppComponent],
 })
