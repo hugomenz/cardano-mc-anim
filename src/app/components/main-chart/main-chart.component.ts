@@ -1,7 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import Chart, { layouts } from 'chart.js/auto';
-import { Subject, Subscription, takeUntil } from 'rxjs';
-import { Data } from 'src/app/core/model/data.model';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import Chart from 'chart.js/auto';
 import { DataService } from 'src/app/core/services/data.service';
 
 @Component({
@@ -9,22 +7,23 @@ import { DataService } from 'src/app/core/services/data.service';
   templateUrl: './main-chart.component.html',
   styleUrls: ['./main-chart.component.scss'],
 })
-export class MainChartComponent implements OnInit {
-  @Input() chartID: string = 'main';
-
+export class MainChartComponent implements OnInit, AfterViewInit, OnDestroy {
   public chart!: Chart;
+
+  chartData: number[] = [];
 
   constructor(private dataService: DataService) {}
 
   ngOnInit() {}
 
   ngAfterViewInit() {
+    this.createChart();
     setTimeout(() => {
-      this.createChart();
       this.dataService.getChartData().subscribe((data) => {
         let lastValue = data[data.length - 1];
 
-        this.chart.data.labels = data.map((element: Data) => element.epoch);
+        this.chart.data.labels?.push(lastValue.epoch);
+        this.chartData.push(lastValue.marketcap);
 
         this.chart.data.datasets[0] = {
           label: 'test',
@@ -33,7 +32,7 @@ export class MainChartComponent implements OnInit {
           tension: 0,
           fill: false,
           borderColor: 'blue',
-          data: data.map((element: Data) => parseFloat(element.marketcap)),
+          data: this.chartData,
         };
 
         this.chart.options.scales = {
@@ -52,6 +51,7 @@ export class MainChartComponent implements OnInit {
             ticks: { font: { size: 10 } },
           },
         };
+
         this.chart.update();
       });
     });
@@ -60,12 +60,16 @@ export class MainChartComponent implements OnInit {
   createChart() {
     console.log(`createChart | Chart creado!`);
     Chart.defaults.color = '#000';
-    this.chart = new Chart(this.chartID, {
+    this.chart = new Chart('main', {
       data: {
         labels: [],
         datasets: [],
       },
       options: {
+        animation: {
+          duration: 0,
+        },
+
         responsive: true,
         maintainAspectRatio: false,
         devicePixelRatio: 2,
@@ -76,5 +80,9 @@ export class MainChartComponent implements OnInit {
         },
       },
     });
+  }
+
+  ngOnDestroy(): void {
+    this.chart.destroy();
   }
 }

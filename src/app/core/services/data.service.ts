@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable, of, Subject } from 'rxjs';
-import { Data } from '../model/data.model';
+import { Data, DataVM } from '../model/data.model';
 interface DataPoint {
   x: number;
   y: number;
@@ -12,9 +12,9 @@ interface DataPoint {
 export class DataService {
   index = 0;
   data!: any[];
-  chartDataArr: Data[] = [];
+  chartDataArr: DataVM[] = [];
 
-  private chartDataSubject = new Subject<Data[]>();
+  private chartDataSubject = new Subject<DataVM[]>();
 
   constructor(private http: HttpClient) {}
 
@@ -51,17 +51,16 @@ export class DataService {
     }
   }
 
-  onPushElement(obj: Data) {
+  onPushElement(obj: DataVM) {
     this.chartDataArr.push(obj);
   }
 
-  updateChart(obj: Data) {
+  updateChart(obj: DataVM) {
     this.chartDataArr.push(obj);
     this.chartDataSubject.next(this.chartDataArr);
   }
 
-  getChartData(): Observable<Data[]> {
-    console.log(`desde getChartData | Servicio --- ${this.chartDataArr}`);
+  getChartData(): Observable<any> {
     return this.chartDataSubject.asObservable();
   }
 }
