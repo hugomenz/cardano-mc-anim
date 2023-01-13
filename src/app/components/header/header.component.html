@@ -1,1 +1,20 @@
-<p>header works!</p>
+<div class="container">
+  <button (click)="next()">Siguiente</button>
+  <button (click)="unsubscribe()">Cancelar</button>
+  <table class="table">
+    <td class="date">{{ data.date }}</td>
+    <td class="network-age">Network Age</td>
+    <td class="price">Price</td>
+    <td class="market-cap">Market Cap</td>
+    <td class="epoch">{{ "Epoch " + data.epoch }}</td>
+    <td class="index">{{ this.dataService.index + " days" }}</td>
+    <td class="close">{{ data.close }}</td>
+    <td class="marketcap">
+      ${{
+        data.marketcap >= 1000000000
+          ? (data.marketcap / 1000000000).toFixed(2) + "B"
+          : (data.marketcap / 1000000).toFixed(2) + "M"
+      }}
+    </td>
+  </table>
+</div>
