@@ -6,7 +6,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { MainChartComponent } from './components/main-chart/main-chart.component';
 import { SideChartComponent } from './components/side-chart/side-chart.component';
 import { FooterComponent } from './components/footer/footer.component';
-
+import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
@@ -15,7 +15,7 @@ import { FooterComponent } from './components/footer/footer.component';
     SideChartComponent,
     FooterComponent,
   ],
-  imports: [BrowserModule],
+  imports: [BrowserModule, HttpClientModule],
   providers: [],
   bootstrap: [AppComponent],
 })
