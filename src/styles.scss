@@ -1,12 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css2?family=Lato&display=swap");
+
 body,
 html {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-  border: 1px solid red;
+  font-family: "Lato", sans-serif;
+  font-variant-numeric: tabular-nums;
+  background: #111;
+
   display: flex;
   justify-content: center;
   align-items: center;

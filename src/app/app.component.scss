@@ -1,17 +1,18 @@
 .box {
-  border: 1px solid black;
-  width: 75vw;
+  margin-top: 80px;
+
+  width: 70vw;
   height: 80vh;
   display: grid;
-  grid-template-columns: 1.4fr 0.6fr;
+  grid-template-columns: 1.4fr 0.4fr 0.2fr;
   grid-template-rows: 0.5fr 2.9fr 0.3fr;
   grid-auto-rows: 1fr;
-  gap: 0px 0px;
+  gap: 0px 0px 0px;
   grid-auto-flow: row;
   grid-template-areas:
-    "header side-chart"
-    "main-chart side-chart"
-    "footer footer";
+    "header side-chart side-chart"
+    "main-chart side-chart side-chart"
+    "footer footer footer";
 }
 
 .footer {

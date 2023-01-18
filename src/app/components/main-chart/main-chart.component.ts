@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
-import Chart from 'chart.js/auto';
+import { Chart } from 'chart.js';
 import { DataService } from 'src/app/core/services/data.service';
 
 @Component({
@@ -11,6 +11,7 @@ export class MainChartComponent implements OnInit, AfterViewInit, OnDestroy {
   public chart!: Chart;
 
   chartData: number[] = [];
+  labelData: string[] = [];
 
   constructor(private dataService: DataService) {}
 
@@ -18,18 +19,21 @@ export class MainChartComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     this.createChart();
+
     setTimeout(() => {
+      this.chartData = [];
       this.dataService.getChartData().subscribe((data) => {
         let lastValue = data[data.length - 1];
 
-        this.chart.data.labels?.push(lastValue.epoch);
+        this.chart.data.labels?.push(this.dataService.index);
         this.chartData.push(lastValue.marketcap);
 
+        console.log(this.chartData);
+
         this.chart.data.datasets[0] = {
-          label: 'test',
           yAxisID: 'yAxis0',
           type: 'line',
-          tension: 0,
+          tension: 0.3,
           fill: false,
           borderColor: 'blue',
           data: this.chartData,
@@ -37,18 +41,60 @@ export class MainChartComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.chart.options.scales = {
           yAxis0: {
-            beginAtZero: true,
-            grid: { display: true },
+            type: 'logarithmic',
+            //beginAtZero: true,
+            min: 100000000,
+            max: 10000000000000,
+            grid: { display: false },
             position: 'right',
             title: {
-              display: true,
+              display: false,
               text: 'marketcap',
             },
-            ticks: { font: { size: 12 } },
+
+            afterBuildTicks: (scale) => {
+              scale.ticks = [
+                {
+                  value: 100000000,
+                },
+
+                {
+                  value: 1000000000,
+                },
+
+                {
+                  value: 10000000000,
+                },
+
+                {
+                  value: 100000000000,
+                },
+
+                {
+                  value: 1000000000000,
+                },
+                {
+                  value: 10000000000000,
+                },
+              ];
+            },
+            ticks: {
+              display: false,
+              callback(value, index, ticks) {
+                if (value >= 1000000000000) {
+                  return '$' + +value / 1000000000000 + 'T';
+                } else if (value < 1000000000000 && value >= 1000000000) {
+                  return '$' + +value / 1000000000 + 'B';
+                } else {
+                  return '$' + +value / 1000000 + 'M';
+                }
+              },
+              font: { size: 12 },
+            },
           },
           x: {
             grid: { display: false },
-            ticks: { font: { size: 10 } },
+            ticks: { display: false, font: { size: 10 } },
           },
         };
 
@@ -69,10 +115,15 @@ export class MainChartComponent implements OnInit, AfterViewInit, OnDestroy {
         animation: {
           duration: 0,
         },
-
+        plugins: {
+          legend: {
+            display: false,
+          },
+        },
         responsive: true,
+
         maintainAspectRatio: false,
-        devicePixelRatio: 2,
+        //devicePixelRatio: 2,
         elements: {
           point: {
             radius: 0,

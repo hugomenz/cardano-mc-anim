@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { defaultIfEmpty, Subscription } from 'rxjs';
+import { defaultIfEmpty, interval, Subscription } from 'rxjs';
 import { Data } from 'src/app/core/model/data.model';
 import { DataService } from 'src/app/core/services/data.service';
 
@@ -12,6 +12,14 @@ export class HeaderComponent implements OnInit {
   firstData: any;
   data: any;
   subscription!: Subscription;
+
+  //
+  isPlaying = false;
+  speed = 50; // Default speed is 1 sec
+  //
+  ///
+  indexSpeed = 1;
+  ///
 
   constructor(public dataService: DataService) {
     this.data = [
@@ -30,30 +38,33 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.subscription = this.dataService.getData().subscribe((data) => {
       this.firstData = data[0];
-      console.log(this.firstData);
       this.data = data;
+    });
+    this.start();
+  }
+
+  start() {
+    this.isPlaying = true;
+    const source = interval(this.speed);
+    this.subscription = source.subscribe((val) => {
+      this.dataService.next();
+      this.data = this.dataService.data[this.dataService.index];
+      this.dataService.updateChart(this.data);
     });
   }
 
-  next() {
-    this.dataService.next();
-    this.data = this.dataService.data[this.dataService.index];
-    console.log(`Epoch ${this.data.epoch}`);
-    this.dataService.updateChart(this.data);
-    console.log(this.dataService.chartDataArr);
+  stop() {
+    this.isPlaying = false;
+    this.subscription.unsubscribe();
+    this.data = this.firstData;
+    this.dataService.index = 0;
   }
 
-  unsubscribe() {
-    this.data = this.firstData;
-    this.subscription.unsubscribe();
-    this.dataService.index = 0;
-    this.subscription = this.dataService
-      .getData()
-      .pipe(defaultIfEmpty([]))
-      .subscribe((data) => {
-        if (data.length > 0) {
-          this.data = data[this.dataService.index];
-        }
-      });
+  setSpeed(speed: number) {
+    this.speed = speed;
+    if (this.isPlaying) {
+      this.stop();
+      this.start();
+    }
   }
 }

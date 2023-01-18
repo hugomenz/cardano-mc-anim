@@ -1,3 +1,14 @@
-canvas {
+.chart-container {
+  padding: 16px 0px 0px 0px;
+  display: flex;
+  justify-content: flex-end;
+
+  background-color: #111;
   height: 100%;
+}
+
+canvas {
+  //border: 1px solid blue;
+  height: 562px !important; //562px
+  width: 900px !important; //1053px
 }

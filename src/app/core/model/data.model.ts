@@ -6,7 +6,7 @@ export interface Data {
   close: string;
   volume: string;
   marketcap: string;
-  epoch: number;
+  epoch?: number;
 }
 
 export interface DataVM {
@@ -17,5 +17,5 @@ export interface DataVM {
   close: string;
   volume: string;
   marketcap: number;
-  epoch: number;
+  epoch?: number;
 }
