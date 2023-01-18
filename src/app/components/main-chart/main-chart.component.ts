@@ -45,7 +45,7 @@ export class MainChartComponent implements OnInit, AfterViewInit, OnDestroy {
             //beginAtZero: true,
             min: 100000000,
             max: 10000000000000,
-            grid: { display: false },
+            grid: { display: true },
             position: 'right',
             title: {
               display: false,
