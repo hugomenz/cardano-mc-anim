@@ -1,27 +1,25 @@
-# CardanoMcAnim
+# Cardano Market Capitalization Graph Representation
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.4.
+I developed this web application to represent the market capitalization of Cardano on a logarithmic scale throughout the life of the network. Additionally, a side bar chart is included that shows the number of days in which the capitalization falls within a specific range.
 
-## Development server
+## Data Retrieval
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+The data used in this application is obtained through a static JSON file hosted at the path "./assets/data/json/cmcdata.json". The Angular HttpClient module is used to retrieve the data and the RxJS "map" operator to process and prepare it for use in the charts. The Angular service called "DataService" handles the data retrieval and processing, as well as updating and obtaining data for the charts.
 
-## Code scaffolding
+## Technologies Used
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- Angular
+- Chartjs
+- ng2 charts
+- RxJS
 
-## Build
+# Viewing the Application
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+You can see a live demo of the application hosted on Github pages by visiting this link: https://hugomenz.github.io/cardano-mc-anim/
 
-## Running unit tests
+To run the application locally, you can clone the repository and execute the following commands in the root of the project:
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+```bash
+npm install
+npm start
+```
